@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.base.json"
+  },
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@typescript-eslint", "prefer-arrow", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-parameter-properties": "off",
+    "curly": "error",
+    "func-style": ["error", "expression"],
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "spaced-comment": ["error", "always"],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "NewExpression[callee.name='Promise']",
+        "message": "Do not use Promises, use async / await"
+      },
+      {
+        "selector": "Identifier[name='then']",
+        "message": "Do not use Promises and then, use async / await"
+      },
+      "warn",
+      "WithStatement"
+    ],
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": ["error"],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
+}

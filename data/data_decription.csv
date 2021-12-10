@@ -1,0 +1,10 @@
+﻿Deck ID,Identifier
+NMDS 1,"Coordination plot, dimention 1"
+NMDS 2,"Coordination plot, dimention 2"
+Neighbours average win rate,Avg win rate of the deck + 19 closst neighbours
+Games,Games played in a draft
+Wins,Wins in a draft
+Losses,Losses in a draft
+Neigh1,"Neighbour Identifier (Neigh1= closest neighbour, Neigh2= 2nd closest etc.)"
+NeighWin1,Wins of Xth neighbour deck
+Neigh Loss1,Losses of the Xth neighbour deck
