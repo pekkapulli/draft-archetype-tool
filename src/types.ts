@@ -67,7 +67,16 @@ export interface DeckDatum {
 }
 
 export interface Clusters {
-  [key: string]: DeckDatum[];
+  [key: string]: Cluster;
+}
+
+export interface Cluster {
+  id: string;
+  x1: number;
+  x2: number;
+  y1: number;
+  y2: number;
+  decks: DeckDatum[];
 }
 
 export interface DeckList {

@@ -234,6 +234,7 @@ export const Button = styled.div`
   justify-content: center;
   white-space: nowrap;
   display: inline-block;
+  border-radius: 50%;
 
   & + & {
     margin-left: ${theme.spacing(2)};

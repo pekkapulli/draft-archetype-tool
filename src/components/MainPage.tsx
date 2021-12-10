@@ -11,9 +11,9 @@ import styled from 'styled-components';
 import { theme } from '../theme';
 import { csvParse, csvParseRows, DSVRowArray } from 'd3-dsv';
 import DeckPlot from './DeckPlot';
-import { Clusters, DeckDatum, DeckList } from '../types';
+import { Cluster, Clusters, DeckDatum, DeckList } from '../types';
 import { ClusterCharts } from './ClusterCharts';
-import { max, min, orderBy } from 'lodash';
+import { mapValues, max, min, orderBy } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
 
 const Cards = styled.div`
@@ -34,50 +34,6 @@ const Card = styled.div`
   }
 `;
 
-const KeyIndicatorArea = styled.div`
-  margin: ${theme.spacing(1)} 0 0 0;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-
-  & + & {
-    margin: 0;
-  }
-`;
-
-const KeyIndicatorAmount = styled.div`
-  ${theme.fontBold};
-  ${theme.fontSize(4)};
-  color: ${theme.colors.blue};
-  width: 40px;
-  text-align: center;
-  flex-shrink: 0;
-`;
-
-const KeyIndicatorText = styled.div`
-  flex-grow: 1;
-  color: blue;
-  text-transform: uppercase;
-  ${theme.fontNormal};
-  color: ${theme.colors.blue};
-  ${theme.fontSize(0)};
-  line-height: 1.2;
-`;
-
-interface KeyIndicatorProps {
-  amount: string;
-  text: string;
-}
-
-const KeyIndicator = (props: KeyIndicatorProps) => (
-  <KeyIndicatorArea>
-    <KeyIndicatorAmount>{props.amount}</KeyIndicatorAmount>
-    <KeyIndicatorText>{props.text}</KeyIndicatorText>
-  </KeyIndicatorArea>
-);
-
 const fetchMetaData = async (
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
 ) => {
@@ -88,7 +44,11 @@ const fetchMetaData = async (
     parsed,
     ['Neighbours average win rate'],
     ['asc']
-  );
+  ).map((d) => ({
+    ...d,
+    'NMDS 1': Number(d['NMDS 1']) + 1,
+    'NMDS 2': Number(d['NMDS 2']) + 1,
+  }));
   setMetaData(sorted);
 };
 
@@ -104,42 +64,97 @@ const fetchDeckData = async (
 export default () => {
   const [metaData, setMetaData] = useState<null | DeckDatum[]>(null);
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
+  const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
 
   useEffect(() => {
     fetchMetaData(setMetaData);
     fetchDeckData(setDeckLists);
   }, []);
 
-  const [maxWins, minWins, topDecks] = useDeepMemo(() => {
-    const neighbourWins = metaData?.map(
-      (d) => d['Neighbours average win rate']
-    );
-    const maxW = max(neighbourWins);
-    const minW = min(neighbourWins);
-
+  const [decks, topDecks] = useDeepMemo(() => {
     const topDecks = metaData?.slice(metaData.length * 0.9);
+    const dataSet = filterTopDecks ? topDecks : metaData;
 
-    return [maxW, minW, topDecks];
-  }, [metaData]);
+    return [dataSet, topDecks];
+  }, [metaData, filterTopDecks]);
 
   const [clusters, setClusters] = useState<Clusters>({});
+
+  const getDecksForCluster = (cluster: Cluster) => {
+    return (
+      decks?.filter(
+        (deck) =>
+          deck['NMDS 1'] > cluster.x1 &&
+          deck['NMDS 1'] < cluster.x2 &&
+          deck['NMDS 2'] < cluster.y1 &&
+          deck['NMDS 2'] > cluster.y2
+      ) || []
+    );
+  };
+
+  useEffect(() => {
+    setClusters(
+      mapValues(clusters, (cluster) => ({
+        ...cluster,
+        decks: getDecksForCluster(cluster),
+      }))
+    );
+  }, [filterTopDecks]);
+
+  const addCluster = (cluster: Cluster) => {
+    setClusters({
+      ...clusters,
+      [cluster.id]: {
+        ...cluster,
+        decks: getDecksForCluster(cluster),
+      },
+    });
+  };
+
+  const removeCluster = (id: string) => {
+    console.log('remove', id);
+    const newClusters = Object.keys(clusters)
+      .filter((cluster) => cluster !== id)
+      .reduce<Clusters>(
+        (result, cluster, i) => ({
+          ...result,
+          [i.toString()]: {
+            ...clusters[cluster],
+            id: i.toString(),
+          },
+        }),
+        {}
+      );
+    setClusters(newClusters);
+  };
 
   return (
     <ArticleMain>
       <Header header="The Archetypist" />
       <WideTextContent>
-        {metaData && topDecks && (
+        <label style={{ cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            onChange={(event) => setFilterTopDecks(event.target.checked)}
+            checked={filterTopDecks}
+          />{' '}
+          Filter to top decks
+        </label>
+        {decks && topDecks && (
           <DeckPlot
-            data={metaData}
+            data={decks}
             topDecks={topDecks}
-            setClusters={setClusters}
+            clusters={clusters}
+            addCluster={addCluster}
+            removeCluster={removeCluster}
           />
         )}
-        {metaData && topDecks && deckLists && (
+        {decks && topDecks && deckLists && (
           <ClusterCharts
             clusters={clusters}
             topDecks={topDecks}
             deckLists={deckLists}
+            removeCluster={removeCluster}
           />
         )}
       </WideTextContent>

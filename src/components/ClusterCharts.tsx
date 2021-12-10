@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { mapValues, orderBy, sum } from 'lodash';
 import styled from 'styled-components';
 import { useDeepMemo } from '../hooks/useDeepMemo';
@@ -9,6 +9,7 @@ interface ClusterChartsProps {
   clusters: Clusters;
   topDecks: DeckDatum[];
   deckLists: DeckList[];
+  removeCluster: (id: string) => void;
 }
 
 const ClusterChartsContainer = styled.div`
@@ -16,16 +17,22 @@ const ClusterChartsContainer = styled.div`
 `;
 
 export const ClusterCharts = (props: ClusterChartsProps) => {
-  const { clusters, topDecks, deckLists } = props;
-  // const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
+  const { clusters, topDecks, deckLists, removeCluster } = props;
 
   const [cards] = useDeepMemo(() => {
-    return [Object.keys(deckLists[0]).filter((key) => key !== 'ID')];
+    return [
+      Object.keys(deckLists[0]).filter(
+        (key) =>
+          !['ID', 'Plains', 'Island', 'Swamp', 'Mountain', 'Forest'].includes(
+            key
+          )
+      ),
+    ];
   }, [deckLists]);
 
   const [clusterAnalysis] = useDeepMemo(() => {
-    const analysis = mapValues(clusters, (decks, cluster) => {
-      const clusterDecksWithLists = decks.map((deck) => ({
+    const analysis = mapValues(clusters, (cluster, id) => {
+      const clusterDecksWithLists = cluster.decks.map((deck) => ({
         ...deck,
         deckList: deckLists.find((list) => list.ID === deck['Deck ID']),
       }));
@@ -42,7 +49,7 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
           ) / clusterDecksWithLists.length,
       }));
       return {
-        cluster,
+        cluster: id,
         averageWins,
         averageAmounts: orderBy(averageAmounts, 'averageAmount', 'desc'),
         decks: clusterDecksWithLists,
@@ -53,17 +60,15 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
 
   return (
     <ClusterChartsContainer>
-      {/* <label>
-        <input
-          type="checkbox"
-          onChange={(event) => setFilterTopDecks(event.target.checked)}
-          checked={filterTopDecks}
-        />{' '}
-        Filter to top decks
-      </label> */}
-      {Object.keys(props.clusters).map((cluster) => (
-        <ClusterCard key={cluster} clusterAnalysis={clusterAnalysis[cluster]} />
-      ))}
+      {orderBy(Object.keys(props.clusters), undefined, 'desc').map(
+        (cluster) => (
+          <ClusterCard
+            key={cluster}
+            clusterAnalysis={clusterAnalysis[cluster]}
+            removeCluster={removeCluster}
+          />
+        )
+      )}
     </ClusterChartsContainer>
   );
 };

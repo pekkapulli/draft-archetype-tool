@@ -11,11 +11,10 @@ import {
 import InfoText from './InfoText';
 
 interface TitleProps {
-  size: 'large' | 'small' | 'card' | 'smallCard';
+  size: 'large' | 'small' | 'card' | 'smallCard' | 'largeCard';
   buttons?: {
     text: string;
-    link?: string;
-    infoText?: string;
+    onClick: () => void;
   }[];
   inView?: boolean;
 }
@@ -51,7 +50,7 @@ export const TitleWithButtons: React.FunctionComponent<TitleProps> = (
   props
 ) => {
   const title =
-    props.size === 'large' ? (
+    props.size === 'large' || props.size === 'largeCard' ? (
       <SectionTitle>{props.children}</SectionTitle>
     ) : props.size === 'smallCard' ? (
       <SmallCardTitle>{props.children}</SmallCardTitle>
@@ -62,7 +61,9 @@ export const TitleWithButtons: React.FunctionComponent<TitleProps> = (
   return (
     <TitleContainer
       border={
-        props.size === 'card' ? theme.colors.grey(3) : theme.colors.grey(5)
+        props.size === 'card' || props.size === 'largeCard'
+          ? theme.colors.grey(3)
+          : theme.colors.grey(5)
       }
       marginTop={
         props.size === 'large'
@@ -79,18 +80,12 @@ export const TitleWithButtons: React.FunctionComponent<TitleProps> = (
       <Buttons>
         {props.buttons?.map((button) => (
           <ButtonContainer key={button.text}>
-            {button.infoText ? (
-              <InfoText side="left" inView={props.inView === true}>
-                {button.infoText}
-              </InfoText>
-            ) : undefined}
-            {button.link ? (
-              <LinkButton key={button.text} to={button.link}>
-                {button.text}
-              </LinkButton>
-            ) : (
-              <Button key={button.text}>{button.text}</Button>
-            )}
+            <Button
+              key={button.text}
+              onClick={button.onClick ? () => button.onClick() : undefined}
+            >
+              {button.text}
+            </Button>
           </ButtonContainer>
         ))}
       </Buttons>
