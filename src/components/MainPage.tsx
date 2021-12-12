@@ -1,38 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import scrollama from 'scrollama';
-import {
-  ArticleMain,
-  TextContent,
-  WideTextContent,
-} from './common-styled-components';
+import React, { useEffect, useState } from 'react';
+import { ArticleMain, P, WideTextContent } from './common-styled-components';
 import 'intersection-observer';
 import Header from './Header';
 import styled from 'styled-components';
 import { theme } from '../theme';
-import { autoType, csvParse, csvParseRows, DSVRowArray } from 'd3-dsv';
+import { autoType, csvParse } from 'd3-dsv';
 import DeckPlot from './DeckPlot';
 import { Cluster, Clusters, DeckDatum, DeckList } from '../types';
 import { ClusterCharts } from './ClusterCharts';
-import { mapValues, max, min, orderBy } from 'lodash';
+import { mapValues, orderBy } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
-
-const Cards = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  margin: ${theme.spacing(3)} 0;
-`;
-
-const Card = styled.div`
-  padding: ${theme.spacing(3)};
-  margin: 0 ${theme.spacing(3)} ${theme.spacing(3)} 0;
-  background-color: ${theme.colors.grey(5)};
-  max-width: 320px;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0px 3px 3px ${theme.colors.blue};
-  }
-`;
 
 const fetchMetaData = async (
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
@@ -64,10 +41,22 @@ const fetchDeckData = async (
   setDeckLists(parsed);
 };
 
+const InlineInput = styled.input`
+  display: inline-block;
+  height: 16px;
+  width: 50px;
+  border: none;
+  border-bottom: 1px dashed ${theme.colors.blue};
+  color: ${theme.colors.blue};
+  ${theme.fontNormal};
+  ${theme.fontSize(0)};
+`;
+
 export default () => {
   const [metaData, setMetaData] = useState<null | DeckDatum[]>(null);
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
+  const [topPercentage, setTopPercentage] = useState<number>(10);
 
   useEffect(() => {
     fetchMetaData(setMetaData);
@@ -75,11 +64,14 @@ export default () => {
   }, []);
 
   const [decks, topDecks] = useDeepMemo(() => {
-    const topDecks = metaData?.slice(metaData.length * 0.9);
+    const topDecks = metaData?.slice(
+      metaData.length * (1 - topPercentage / 100)
+    );
+    console.log(topDecks?.length);
     const dataSet = filterTopDecks ? topDecks : metaData;
 
     return [dataSet, topDecks];
-  }, [metaData, filterTopDecks]);
+  }, [metaData, filterTopDecks, topPercentage]);
 
   const [clusters, setClusters] = useState<Clusters>({});
 
@@ -135,6 +127,25 @@ export default () => {
     <ArticleMain>
       <Header header="The Archetypist" />
       <WideTextContent>
+        <P>
+          This is a representation of 2000 latest RG decks in Innistrad: Crimson
+          Vow. Similar decks are closer to each other on the map.
+        </P>
+        <P>
+          Each deck is given a value according to the win rate of it and its 19
+          closest neighbours. The top{' '}
+          <InlineInput
+            type="number"
+            step={1}
+            min={1}
+            max={99}
+            value={topPercentage}
+            onChange={(event) => setTopPercentage(event.target.valueAsNumber)}
+          />{' '}
+          % of these values are highlighted in blue. These blue clusters can
+          help define different strong deck compositions in the colour pair.
+        </P>
+        <P>Drag boxes on the graph to explore clusters.</P>
         <label style={{ cursor: 'pointer' }}>
           <input
             type="checkbox"

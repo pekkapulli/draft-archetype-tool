@@ -24,8 +24,6 @@ const SVG = styled.svg`
   margin: ${theme.spacing(4)} 0;
 `;
 
-// const neighbourKeys = range(1, 20, 1).map((n) => `Neigh${n}`);
-
 const DeckPlot = (props: Props & ParentDimensionsProps) => {
   const {
     parentDimensions,
@@ -37,6 +35,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
   } = props;
   const width = parentDimensions.width;
   const height = width * 0.5;
+  console.log('rendering deck plot', topDecks.length);
 
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -72,7 +71,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
       />
     ));
     return [plotRender, xScale, yScale];
-  }, [data, width, height, clusters]);
+  }, [data, width, height, clusters, topDecks]);
 
   useEffect(() => {
     const sweeper = brush()
