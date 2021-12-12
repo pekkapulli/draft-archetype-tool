@@ -53,7 +53,6 @@ const CardName = styled(CardAmount)`
 `;
 
 export const ExampleDecks = ({ deckLists }: DeckListsProps) => {
-  console.log(deckLists);
   const lists = useDeepMemo(
     () =>
       deckLists

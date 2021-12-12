@@ -12,9 +12,10 @@ import { mapValues, orderBy } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
 
 const fetchMetaData = async (
+  selectedColors: string,
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
 ) => {
-  let response = await fetch(`data/metadata.csv`);
+  let response = await fetch(`data/metadata${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckDatum[] = csvParse(
     text,
@@ -33,9 +34,10 @@ const fetchMetaData = async (
 };
 
 const fetchDeckData = async (
+  selectedColors: string,
   setDeckLists: React.Dispatch<React.SetStateAction<DeckList[] | null>>
 ) => {
-  let response = await fetch(`data/decklists.csv`);
+  let response = await fetch(`data/VOW${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
@@ -52,22 +54,34 @@ const InlineInput = styled.input`
   ${theme.fontSize(0)};
 `;
 
+const InlineSelect = styled.select`
+  display: inline-block;
+  height: 18px;
+  width: 50px;
+  border: none;
+  border-bottom: 1px dashed ${theme.colors.blue};
+  color: ${theme.colors.blue};
+  ${theme.fontBold};
+  ${theme.fontSize(0)};
+`;
+
 export default () => {
   const [metaData, setMetaData] = useState<null | DeckDatum[]>(null);
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
   const [topPercentage, setTopPercentage] = useState<number>(10);
+  const [selectedColors, setSelectedColors] = useState<string>('RG');
 
   useEffect(() => {
-    fetchMetaData(setMetaData);
-    fetchDeckData(setDeckLists);
-  }, []);
+    setClusters({});
+    fetchMetaData(selectedColors, setMetaData);
+    fetchDeckData(selectedColors, setDeckLists);
+  }, [selectedColors]);
 
   const [decks, topDecks] = useDeepMemo(() => {
     const topDecks = metaData?.slice(
       metaData.length * (1 - topPercentage / 100)
     );
-    console.log(topDecks?.length);
     const dataSet = filterTopDecks ? topDecks : metaData;
 
     return [dataSet, topDecks];
@@ -107,7 +121,6 @@ export default () => {
   };
 
   const removeCluster = (id: string) => {
-    console.log('remove', id);
     const newClusters = Object.keys(clusters)
       .filter((cluster) => cluster !== id)
       .reduce<Clusters>(
@@ -123,13 +136,23 @@ export default () => {
     setClusters(newClusters);
   };
 
+  const colours = ['RG', 'UG'];
+
   return (
     <ArticleMain>
       <Header />
       <WideTextContent>
         <P>
-          This is a representation of 2000 latest RG decks in Innistrad: Crimson
-          Vow. Similar decks are closer to each other on the map.
+          This is a representation of 2000 latest{' '}
+          <InlineSelect onChange={(e) => setSelectedColors(e.target.value)}>
+            {colours.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </InlineSelect>{' '}
+          decks in Innistrad: Crimson Vow. Similar decks are closer to each
+          other on the map.
         </P>
         <P>
           Each deck is given a value according to the win rate of it and its 19

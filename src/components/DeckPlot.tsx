@@ -35,8 +35,6 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
   } = props;
   const width = parentDimensions.width;
   const height = width * 0.5;
-  console.log('rendering deck plot', topDecks.length);
-
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [plot, xScale, yScale] = useDeepMemo(() => {
@@ -103,7 +101,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     select(svgRef.current)
       .select('.brush')
       .call(sweeper as any);
-  }, [width, height, clusters]);
+  }, [width, height, clusters, data]);
 
   return (
     <SVG width={width} height={height} ref={svgRef}>
