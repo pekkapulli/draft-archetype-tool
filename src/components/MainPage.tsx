@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { A, ArticleMain, P, WideTextContent } from './common-styled-components';
+import { ArticleMain, P, WideTextContent } from './common-styled-components';
 import 'intersection-observer';
 import Header from './Header';
 import styled from 'styled-components';

@@ -22,7 +22,7 @@ const CardRow = styled.div`
 `;
 
 const Name = styled.div`
-  ${theme.fontSize(-1)};
+  ${theme.fontSize(0)};
 `;
 
 const BAR_HEIGHT = 30;
@@ -40,7 +40,7 @@ const Amount = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  ${theme.fontSize(-1)};
+  ${theme.fontSize(0)};
   color: white;
   padding-left: ${theme.spacing(2)};
 `;
