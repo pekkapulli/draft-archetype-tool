@@ -25,7 +25,7 @@ const Lists = styled.div`
 
 const List = styled.div`
   margin-right: ${theme.spacing(2)};
-  width: 300px;
+  width: 290px;
   flex-shrink: 0;
 `;
 
@@ -50,6 +50,7 @@ const CardAmount = styled.div`
 const CardName = styled(CardAmount)`
   width: auto;
   text-align: left;
+  flex-grow: 1;
 `;
 
 export const ExampleDecks = ({ deckLists }: DeckListsProps) => {

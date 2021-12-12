@@ -56,7 +56,7 @@ const InlineInput = styled.input`
 
 const InlineSelect = styled.select`
   display: inline-block;
-  height: 18px;
+  height: 20px;
   width: 50px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
@@ -143,7 +143,7 @@ export default () => {
       <Header />
       <WideTextContent>
         <P>
-          This is a representation of 2000 latest{' '}
+          This is a plot of 2000 recent{' '}
           <InlineSelect onChange={(e) => setSelectedColors(e.target.value)}>
             {colours.map((c) => (
               <option key={c} value={c}>
@@ -152,7 +152,7 @@ export default () => {
             ))}
           </InlineSelect>{' '}
           decks in Innistrad: Crimson Vow. Similar decks are closer to each
-          other on the map.
+          other on the map, and decks with more wins have bigger dots.
         </P>
         <P>
           Each deck is given a value according to the win rate of it and its 19

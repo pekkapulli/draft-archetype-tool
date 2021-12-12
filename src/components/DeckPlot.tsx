@@ -54,6 +54,10 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     const yScale = scaleLinear()
       .range([height - 5, 5])
       .domain([minY !== undefined ? minY : 0, maxY !== undefined ? maxY : 2]);
+    const minSize = Math.max(width / 400, 1);
+    const sizeScale = scaleLinear()
+      .range([minSize, minSize * 2])
+      .domain([0, 7]);
     //  scaleColor(d['Neighbours average win rate'])
     const plotRender = data.map((d) => (
       <circle
@@ -64,7 +68,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
             ? theme.colors.blue
             : theme.colors.grey(4)
         }
-        r={3}
+        r={sizeScale(d.Wins)}
         key={d['Deck ID']}
       />
     ));
