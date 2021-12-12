@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArticleMain, P, WideTextContent } from './common-styled-components';
+import { A, ArticleMain, P, WideTextContent } from './common-styled-components';
 import 'intersection-observer';
 import Header from './Header';
 import styled from 'styled-components';
@@ -48,7 +48,7 @@ const InlineInput = styled.input`
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
   color: ${theme.colors.blue};
-  ${theme.fontNormal};
+  ${theme.fontBold};
   ${theme.fontSize(0)};
 `;
 
@@ -125,7 +125,7 @@ export default () => {
 
   return (
     <ArticleMain>
-      <Header header="The Archetypist" />
+      <Header />
       <WideTextContent>
         <P>
           This is a representation of 2000 latest RG decks in Innistrad: Crimson
@@ -145,7 +145,7 @@ export default () => {
           % of these values are highlighted in blue. These blue clusters can
           help define different strong deck compositions in the colour pair.
         </P>
-        <P>Drag boxes on the graph to explore clusters.</P>
+        <P>Create boxes by dragging on the graph to explore clusters.</P>
         <label style={{ cursor: 'pointer' }}>
           <input
             type="checkbox"

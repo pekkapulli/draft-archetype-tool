@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { breakpoints, theme } from '../theme';
-import { StrippedLink } from './common-styled-components';
+import { A, P } from './common-styled-components';
 
 const HeaderArea = styled.div`
   width: 100%;
@@ -18,6 +18,12 @@ const HeaderPiece = styled.div`
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
+  @media (max-width: ${breakpoints.mobile}px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 `;
 
 const HeaderText = styled.div`
@@ -25,41 +31,18 @@ const HeaderText = styled.div`
   ${theme.fontBold};
   ${theme.fontSize(3)};
   max-width: 500px;
+  margin-right: ${theme.spacing(3)};
 `;
 
-const Name = styled.div`
-  color: ${theme.colors.blue};
-  ${theme.fontBold};
-`;
-
-const Arrow = styled.span`
-  display: inline-block;
-  ${theme.fontSize(-2)};
-  padding-left: 4px;
-`;
-
-const BackLink = styled.div`
-  ${theme.fontSize(5)};
-  ${theme.fontBold};
-  color: ${theme.colors.blue};
-  margin-right: ${theme.spacing(4)};
-`;
-
-interface Props {
-  header: string;
-  backLink?: string;
-}
-
-export default (props: Props) => {
+export default () => {
   return (
     <HeaderArea>
       <HeaderPiece>
-        {props.backLink ? (
-          <StrippedLink to={props.backLink}>
-            <BackLink>〈</BackLink>
-          </StrippedLink>
-        ) : undefined}
-        <HeaderText>{props.header}</HeaderText>
+        <HeaderText>Archetypist</HeaderText>
+        <P>
+          by <A href="https://twitter.com/pekkapulli">Pekka Pulli</A> and{' '}
+          <A href="https://twitter.com/Sierkovitz">Sierkovitz</A>
+        </P>
       </HeaderPiece>
     </HeaderArea>
   );
