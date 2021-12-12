@@ -15,11 +15,10 @@ const HeaderArea = styled.div`
 
 const HeaderPiece = styled.div`
   flex-grow: 0;
-  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  @media (max-width: ${breakpoints.mobile}px) {
+  @media (max-width: ${breakpoints.tablet}px) {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -41,7 +40,8 @@ export default () => {
         <HeaderText>Archetypist</HeaderText>
         <P>
           by <A href="https://twitter.com/pekkapulli">Pekka Pulli</A> and{' '}
-          <A href="https://twitter.com/Sierkovitz">Sierkovitz</A>
+          <A href="https://twitter.com/Sierkovitz">Sierkovitz</A>, data by{' '}
+          <A href="https://17lands.com">17Lands</A>
         </P>
       </HeaderPiece>
     </HeaderArea>

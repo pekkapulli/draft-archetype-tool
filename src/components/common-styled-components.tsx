@@ -99,6 +99,8 @@ export const P = styled.p`
   ${theme.fontSize(0)};
   margin: 0 0 ${theme.spacing(3)} 0;
   line-height: 1.6;
+  max-width: 640px;
+  width: 100%;
 `;
 
 export const ShareLink = styled(P)`
