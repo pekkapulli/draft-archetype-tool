@@ -9,7 +9,7 @@ import 'intersection-observer';
 import Header from './Header';
 import styled from 'styled-components';
 import { theme } from '../theme';
-import { csvParse, csvParseRows, DSVRowArray } from 'd3-dsv';
+import { autoType, csvParse, csvParseRows, DSVRowArray } from 'd3-dsv';
 import DeckPlot from './DeckPlot';
 import { Cluster, Clusters, DeckDatum, DeckList } from '../types';
 import { ClusterCharts } from './ClusterCharts';
@@ -39,7 +39,10 @@ const fetchMetaData = async (
 ) => {
   let response = await fetch(`data/metadata.csv`);
   let text = await response.text();
-  const parsed: DeckDatum[] = csvParse(text) as unknown as DeckDatum[];
+  const parsed: DeckDatum[] = csvParse(
+    text,
+    autoType
+  ) as unknown as DeckDatum[];
   const sorted: DeckDatum[] = orderBy(
     parsed,
     ['Neighbours average win rate'],
@@ -57,7 +60,7 @@ const fetchDeckData = async (
 ) => {
   let response = await fetch(`data/decklists.csv`);
   let text = await response.text();
-  const parsed: DeckList[] = csvParse(text) as unknown as DeckList[];
+  const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
 };
 

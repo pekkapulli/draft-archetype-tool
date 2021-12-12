@@ -87,3 +87,8 @@ export interface DeckList {
 export interface DeckDatumWithList extends DeckDatum {
   deckList?: DeckList;
 }
+
+export interface Card {
+  name: string;
+  averageAmount: number;
+}

@@ -19,6 +19,7 @@ export const TextContent = styled.div`
 
 export const WideTextContent = styled.div`
   width: 100%;
+  margin-top: ${theme.spacing(3)};
 `;
 
 export const AppTitle = styled.h1`
