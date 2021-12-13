@@ -41,6 +41,7 @@ export const colors = {
   darkRed: '#813131',
   red: '#db948e',
   lightRed: '#ff7f7f',
+  lightestRed: '#FDE6E6',
   midGrey: '#7c7f85',
   lightGrey: '#dde4ed',
 };

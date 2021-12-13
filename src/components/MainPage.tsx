@@ -52,6 +52,7 @@ const InlineInput = styled.input`
   color: ${theme.colors.blue};
   ${theme.fontBold};
   ${theme.fontSize(0)};
+  padding: 0 2px;
 `;
 
 const InlineSelect = styled.select`
@@ -63,6 +64,7 @@ const InlineSelect = styled.select`
   color: ${theme.colors.blue};
   ${theme.fontBold};
   ${theme.fontSize(0)};
+  padding: 0 2px;
 `;
 
 export default () => {
@@ -78,13 +80,17 @@ export default () => {
     fetchDeckData(selectedColors, setDeckLists);
   }, [selectedColors]);
 
-  const [decks, topDecks] = useDeepMemo(() => {
+  const [decks, topDecks, bottomDecks] = useDeepMemo(() => {
     const topDecks = metaData?.slice(
       metaData.length * (1 - topPercentage / 100)
     );
+    const bottomDecks = metaData?.slice(
+      0,
+      metaData.length * (topPercentage / 100)
+    );
     const dataSet = filterTopDecks ? topDecks : metaData;
 
-    return [dataSet, topDecks];
+    return [dataSet, topDecks, bottomDecks];
   }, [metaData, filterTopDecks, topPercentage]);
 
   const [clusters, setClusters] = useState<Clusters>({});
@@ -151,8 +157,9 @@ export default () => {
               </option>
             ))}
           </InlineSelect>{' '}
-          decks in Innistrad: Crimson Vow. Similar decks are closer to each
-          other on the map, and decks with more wins have bigger dots.
+          Bo1 draft decks in Innistrad: Crimson Vow on Magic Arena. Similar
+          decks (more of the same cards) are closer to each other on the map,
+          and decks with more wins have bigger dots.
         </P>
         <P>
           Each deck is given a value according to the win rate of it and its 19
@@ -161,12 +168,13 @@ export default () => {
             type="number"
             step={1}
             min={1}
-            max={99}
+            max={50}
             value={topPercentage}
             onChange={(event) => setTopPercentage(event.target.valueAsNumber)}
-          />{' '}
-          % of these values are highlighted in blue. These blue clusters can
-          help define different strong deck compositions in the colour pair.
+          />
+          % of these values are highlighted in blue and bottom {topPercentage}%
+          as light red. The blue clusters can help define different strong deck
+          compositions in the colour pair.
         </P>
         <P>Create boxes by dragging on the graph to explore clusters.</P>
         <label style={{ cursor: 'pointer' }}>
@@ -177,10 +185,11 @@ export default () => {
           />{' '}
           Filter to top decks
         </label>
-        {decks && topDecks && (
+        {decks && topDecks && bottomDecks && (
           <DeckPlot
             data={decks}
             topDecks={topDecks}
+            bottomDecks={bottomDecks}
             clusters={clusters}
             addCluster={addCluster}
             removeCluster={removeCluster}

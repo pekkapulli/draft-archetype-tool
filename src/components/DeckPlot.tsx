@@ -15,6 +15,7 @@ import styled from 'styled-components';
 interface Props {
   data: DeckDatum[];
   topDecks: DeckDatum[];
+  bottomDecks: DeckDatum[];
   clusters: Clusters;
   addCluster: (cluster: Cluster) => void;
   removeCluster: (id: string) => void;
@@ -29,6 +30,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     parentDimensions,
     data,
     topDecks,
+    bottomDecks,
     clusters,
     addCluster,
     removeCluster,
@@ -59,21 +61,23 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
       .range([minSize, minSize * 2])
       .domain([0, 7]);
     //  scaleColor(d['Neighbours average win rate'])
-    const plotRender = data.map((d) => (
+    const plotRender = data.map((d, i) => (
       <circle
         cx={xScale(d['NMDS 1'])}
         cy={yScale(d['NMDS 2'])}
         fill={
-          topDecks.find((td) => td['Deck ID'] === d['Deck ID'])
+          bottomDecks.find((bd) => bd['Deck ID'] === d['Deck ID'])
+            ? theme.colors.lightestRed
+            : topDecks.find((td) => td['Deck ID'] === d['Deck ID'])
             ? theme.colors.blue
-            : theme.colors.grey(4)
+            : theme.colors.grey(3)
         }
         r={sizeScale(d.Wins)}
         key={d['Deck ID']}
       />
     ));
     return [plotRender, xScale, yScale];
-  }, [data, width, height, clusters, topDecks]);
+  }, [data, width, height, clusters, topDecks, bottomDecks]);
 
   useEffect(() => {
     const sweeper = brush()
