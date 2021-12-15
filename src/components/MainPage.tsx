@@ -142,7 +142,7 @@ export default () => {
     setClusters(newClusters);
   };
 
-  const colours = ['RG', 'UG'];
+  const colors = ['WB', 'WR', 'UR', 'UG', 'BG', 'RG'];
 
   return (
     <ArticleMain>
@@ -151,7 +151,7 @@ export default () => {
         <P>
           This is a plot of 2000 recent{' '}
           <InlineSelect onChange={(e) => setSelectedColors(e.target.value)}>
-            {colours.map((c) => (
+            {colors.map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>
