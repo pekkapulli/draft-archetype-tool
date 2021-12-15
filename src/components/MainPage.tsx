@@ -45,7 +45,7 @@ const fetchDeckData = async (
 
 const InlineInput = styled.input`
   display: inline-block;
-  height: 16px;
+  height: 20px;
   width: 50px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
@@ -58,7 +58,7 @@ const InlineInput = styled.input`
 const InlineSelect = styled.select`
   display: inline-block;
   height: 20px;
-  width: 50px;
+  width: 60px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
   color: ${theme.colors.blue};
