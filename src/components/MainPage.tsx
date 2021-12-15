@@ -72,7 +72,7 @@ export default () => {
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
   const [topPercentage, setTopPercentage] = useState<number>(10);
-  const [selectedColors, setSelectedColors] = useState<string>('RG');
+  const [selectedColors, setSelectedColors] = useState<string>('WB');
 
   useEffect(() => {
     setClusters({});
@@ -150,9 +150,12 @@ export default () => {
       <WideTextContent>
         <P>
           This is a plot of 2000 recent{' '}
-          <InlineSelect onChange={(e) => setSelectedColors(e.target.value)}>
+          <InlineSelect
+            onChange={(e) => setSelectedColors(e.target.value)}
+            value={selectedColors}
+          >
             {colors.map((c) => (
-              <option key={c} value={c}>
+              <option key={c} value={c} selected={selectedColors === c}>
                 {c}
               </option>
             ))}
