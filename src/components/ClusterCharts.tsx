@@ -10,6 +10,8 @@ interface ClusterChartsProps {
   topDecks: DeckDatum[];
   deckLists: DeckList[];
   removeCluster: (id: string) => void;
+  cards: string[];
+  averageAmounts: Record<string, number>;
 }
 
 const ClusterChartsContainer = styled.div`
@@ -17,18 +19,14 @@ const ClusterChartsContainer = styled.div`
 `;
 
 export const ClusterCharts = (props: ClusterChartsProps) => {
-  const { clusters, topDecks, deckLists, removeCluster } = props;
-
-  const [cards] = useDeepMemo(() => {
-    return [
-      Object.keys(deckLists[0]).filter(
-        (key) =>
-          !['ID', 'Plains', 'Island', 'Swamp', 'Mountain', 'Forest'].includes(
-            key
-          )
-      ),
-    ];
-  }, [deckLists]);
+  const {
+    clusters,
+    topDecks,
+    deckLists,
+    removeCluster,
+    cards,
+    averageAmounts,
+  } = props;
 
   const [clusterAnalysis] = useDeepMemo(() => {
     const analysis = mapValues(clusters, (cluster, id) => {
@@ -66,6 +64,7 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
             key={cluster}
             clusterAnalysis={clusterAnalysis[cluster]}
             removeCluster={removeCluster}
+            averageAmountsInSet={averageAmounts}
           />
         )
       )}

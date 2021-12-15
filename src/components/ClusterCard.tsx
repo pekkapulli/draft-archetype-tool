@@ -16,6 +16,7 @@ interface ClusterAnalysis {
 
 interface ClusterCardProps {
   clusterAnalysis: ClusterAnalysis;
+  averageAmountsInSet: Record<string, number>;
   removeCluster: (id: string) => void;
 }
 
@@ -46,7 +47,10 @@ const ClusterCard = (props: ClusterCardProps) => {
       </P>
       <SmallTitle>Most played cards</SmallTitle>
       <div>
-        <Chart cards={props.clusterAnalysis.averageAmounts.slice(0, 15)} />
+        <Chart
+          cards={props.clusterAnalysis.averageAmounts.slice(0, 15)}
+          averageAmountsInSet={props.averageAmountsInSet}
+        />
       </div>
       <ExampleDecks deckLists={props.clusterAnalysis.decks} />
     </ClusterCardContainer>

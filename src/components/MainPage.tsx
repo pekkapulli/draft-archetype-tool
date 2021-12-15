@@ -8,7 +8,7 @@ import { autoType, csvParse } from 'd3-dsv';
 import DeckPlot from './DeckPlot';
 import { Cluster, Clusters, DeckDatum, DeckList } from '../types';
 import { ClusterCharts } from './ClusterCharts';
-import { mapValues, orderBy } from 'lodash';
+import { mapValues, orderBy, sum } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
 
 const fetchMetaData = async (
@@ -80,18 +80,46 @@ export default () => {
     fetchDeckData(selectedColors, setDeckLists);
   }, [selectedColors]);
 
-  const [decks, topDecks, bottomDecks] = useDeepMemo(() => {
-    const topDecks = metaData?.slice(
-      metaData.length * (1 - topPercentage / 100)
-    );
-    const bottomDecks = metaData?.slice(
-      0,
-      metaData.length * (topPercentage / 100)
-    );
-    const dataSet = filterTopDecks ? topDecks : metaData;
+  const [decks, topDecks, bottomDecks, cards, averageAmounts] =
+    useDeepMemo(() => {
+      const topDecks = metaData?.slice(
+        metaData.length * (1 - topPercentage / 100)
+      );
+      const bottomDecks = metaData?.slice(
+        0,
+        metaData.length * (topPercentage / 100)
+      );
+      const dataSet = filterTopDecks ? topDecks : metaData;
 
-    return [dataSet, topDecks, bottomDecks];
-  }, [metaData, filterTopDecks, topPercentage]);
+      const cards = deckLists
+        ? Object.keys(deckLists[0]).filter(
+            (key) =>
+              ![
+                'ID',
+                'Plains',
+                'Island',
+                'Swamp',
+                'Mountain',
+                'Forest',
+              ].includes(key)
+          )
+        : [];
+
+      const averages =
+        deckLists && cards
+          ? cards.reduce<Record<string, number>>(
+              (result, cardName) => ({
+                ...result,
+                [cardName]:
+                  sum(deckLists.map((list) => list[cardName])) /
+                  deckLists.length,
+              }),
+              {}
+            )
+          : {};
+
+      return [dataSet, topDecks, bottomDecks, cards, averages];
+    }, [metaData, deckLists, filterTopDecks, topPercentage]);
 
   const [clusters, setClusters] = useState<Clusters>({});
 
@@ -204,6 +232,8 @@ export default () => {
             topDecks={topDecks}
             deckLists={deckLists}
             removeCluster={removeCluster}
+            cards={cards}
+            averageAmounts={averageAmounts}
           />
         )}
       </WideTextContent>
