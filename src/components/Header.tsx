@@ -26,9 +26,9 @@ const HeaderPiece = styled.div`
 `;
 
 const HeaderText = styled.div`
-  color: ${theme.colors.blue};
-  ${theme.fontBold};
-  ${theme.fontSize(3)};
+  color: ${theme.colors.black};
+  ${theme.fontTitle};
+  ${theme.fontSize(4)};
   max-width: 500px;
   margin-right: ${theme.spacing(3)};
 `;

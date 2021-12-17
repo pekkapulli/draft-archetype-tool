@@ -11,6 +11,7 @@ import {
   withParentDimensions,
 } from './generic/withParentDimensions';
 import styled from 'styled-components';
+import { Circle } from './generic/Circle';
 
 interface Props {
   data: DeckDatum[];
@@ -51,10 +52,10 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     const minY = min(yValues);
     const maxY = max(yValues);
     const xScale = scaleLinear()
-      .range([5, width - 5])
+      .range([10, width - 10])
       .domain([minX !== undefined ? minX : 0, maxX !== undefined ? maxX : 2]);
     const yScale = scaleLinear()
-      .range([height - 5, 5])
+      .range([height - 10, 10])
       .domain([minY !== undefined ? minY : 0, maxY !== undefined ? maxY : 2]);
     const minSize = Math.max(width / 400, 1);
     const sizeScale = scaleLinear()
@@ -70,7 +71,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
             ? theme.colors.lightestRed
             : topDecks.find((td) => td['Deck ID'] === d['Deck ID'])
             ? theme.colors.blue
-            : theme.colors.grey(3)
+            : theme.colors.lightBlue
         }
         r={sizeScale(d.Wins)}
         key={d['Deck ID']}
@@ -113,6 +114,15 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
 
   return (
     <SVG width={width} height={height} ref={svgRef}>
+      <rect
+        fill="transparent"
+        stroke={theme.colors.grey(5)}
+        strokeWidth={4}
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+      />
       {plot}
       <g className="brush" />
       {values(clusters).map((cluster: Cluster) => (
@@ -138,7 +148,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
             {cluster.id}
           </text>
           <g onClick={() => removeCluster(cluster.id)}>
-            <circle
+            <Circle
               cx={xScale(cluster.x2) - 2}
               cy={yScale(cluster.y1) + 2}
               r={6}

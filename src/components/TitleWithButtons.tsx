@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import { theme } from '../theme';
 import {
   Button,
-  LinkButton,
   SectionTitle,
   SmallTitle,
   SmallCardTitle,
 } from './common-styled-components';
-import InfoText from './InfoText';
 
 interface TitleProps {
   size: 'large' | 'small' | 'card' | 'smallCard' | 'largeCard';
