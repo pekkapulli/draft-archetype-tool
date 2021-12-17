@@ -39,7 +39,7 @@ export default () => {
       <HeaderPiece>
         <HeaderText>Archetypist</HeaderText>
         <P>
-          by <A href="https://twitter.com/pekkapulli">Pekka Pulli</A> and{' '}
+          by <A href="https://pekkapulli.com">Pekka Pulli</A> and{' '}
           <A href="https://twitter.com/Sierkovitz">Sierkovitz</A>, data by{' '}
           <A href="https://17lands.com">17Lands</A>
         </P>

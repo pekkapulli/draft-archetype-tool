@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArticleMain, P, WideTextContent } from './common-styled-components';
+import { A, ArticleMain, P, WideTextContent } from './common-styled-components';
 import 'intersection-observer';
 import Header from './Header';
 import styled from 'styled-components';
@@ -65,6 +65,12 @@ const InlineSelect = styled.select`
   ${theme.fontBold};
   ${theme.fontSize(0)};
   padding: 0 2px;
+`;
+
+const Footer = styled.footer`
+  margin-top: ${theme.spacing(5)};
+  width: 100%;
+  padding: ${theme.spacing(5)} 0;
 `;
 
 export default () => {
@@ -237,6 +243,21 @@ export default () => {
           />
         )}
       </WideTextContent>
+      <Footer>
+        <WideTextContent>
+          <P>
+            Archetypist created by{' '}
+            <A href="https://pekkapulli.com">Pekka Pulli</A> and{' '}
+            <A href="https://twitter.com/Sierkovitz">Sierkovitz</A>, data by{' '}
+            <A href="https://17lands.com">17Lands</A>
+          </P>
+          <P>
+            <A href="https://github.com/pekkapulli/draft-archetype-tool">
+              Archetypist on Github
+            </A>
+          </P>
+        </WideTextContent>
+      </Footer>
     </ArticleMain>
   );
 };
