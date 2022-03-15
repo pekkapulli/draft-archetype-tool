@@ -32,7 +32,7 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
     const analysis = mapValues(clusters, (cluster, id) => {
       const clusterDecksWithLists = cluster.decks.map((deck) => ({
         ...deck,
-        deckList: deckLists.find((list) => list.ID === deck['Deck ID']),
+        deckList: deckLists.find((list) => list.ID === deck.ID),
       }));
       const averageWins =
         sum(clusterDecksWithLists.map((d) => Number(d.Wins))) /

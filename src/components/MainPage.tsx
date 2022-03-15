@@ -15,7 +15,7 @@ const fetchMetaData = async (
   selectedColors: string,
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
 ) => {
-  let response = await fetch(`data/metadata${selectedColors}.csv`);
+  let response = await fetch(`data/NEOmetadata${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckDatum[] = csvParse(
     text,
@@ -27,8 +27,8 @@ const fetchMetaData = async (
     ['asc']
   ).map((d) => ({
     ...d,
-    'NMDS 1': Number(d['NMDS 1']) + 1,
-    'NMDS 2': Number(d['NMDS 2']) + 1,
+    NMDS1: Number(d.NMDS1) + 1,
+    NMDS2: Number(d.NMDS2) + 1,
   }));
   setMetaData(sorted);
 };
@@ -37,7 +37,7 @@ const fetchDeckData = async (
   selectedColors: string,
   setDeckLists: React.Dispatch<React.SetStateAction<DeckList[] | null>>
 ) => {
-  let response = await fetch(`data/VOW${selectedColors}.csv`);
+  let response = await fetch(`data/NEO${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
@@ -78,7 +78,7 @@ export default () => {
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
   const [topPercentage, setTopPercentage] = useState<number>(10);
-  const [selectedColors, setSelectedColors] = useState<string>('WB');
+  const [selectedColors, setSelectedColors] = useState<string>('WU');
 
   useEffect(() => {
     setClusters({});
@@ -133,10 +133,10 @@ export default () => {
     return (
       decks?.filter(
         (deck) =>
-          deck['NMDS 1'] > cluster.x1 &&
-          deck['NMDS 1'] < cluster.x2 &&
-          deck['NMDS 2'] < cluster.y1 &&
-          deck['NMDS 2'] > cluster.y2
+          deck.NMDS1 > cluster.x1 &&
+          deck.NMDS1 < cluster.x2 &&
+          deck.NMDS2 < cluster.y1 &&
+          deck.NMDS2 > cluster.y2
       ) || []
     );
   };
@@ -176,14 +176,14 @@ export default () => {
     setClusters(newClusters);
   };
 
-  const colors = ['WB', 'WR', 'UR', 'UG', 'BG', 'RG'];
+  const colors = ['WU', 'UB', 'WG', 'WB', 'UG', 'UR', 'WR'];
 
   return (
     <ArticleMain>
       <Header />
       <WideTextContent>
         <P>
-          This is a plot of 2000 recent{' '}
+          This is a plot of 1000 recent{' '}
           <InlineSelect
             onChange={(e) => setSelectedColors(e.target.value)}
             value={selectedColors}
@@ -194,9 +194,12 @@ export default () => {
               </option>
             ))}
           </InlineSelect>{' '}
-          Bo1 draft decks in Innistrad: Crimson Vow on Magic Arena. Similar
-          decks (more of the same cards) are closer to each other on the map,
-          and decks with more wins have bigger dots.
+          Bo1 draft decks in Kamigawa: Neon Dynasty on Magic Arena. The decks
+          come from players ranked platinum or better.
+        </P>
+        <P>
+          Similar decks (more of the same cards) are closer to each other on the
+          map, and decks with more wins have bigger dots.
         </P>
         <P>
           Each deck is given a value according to the win rate of it and its 19

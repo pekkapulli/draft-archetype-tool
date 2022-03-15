@@ -1,8 +1,8 @@
 export interface DeckDatum {
   // [key: string]: string | number;
-  'Deck ID': string;
-  'NMDS 1': number;
-  'NMDS 2': number;
+  ID: string;
+  NMDS1: number;
+  NMDS2: number;
   'Neighbours average win rate': number;
   Games: number;
   Wins: number;

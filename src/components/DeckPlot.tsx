@@ -42,10 +42,10 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
 
   const [plot, xScale, yScale] = useDeepMemo(() => {
     const xValues = data
-      .map((d) => d['NMDS 1'])
+      .map((d) => d.NMDS1)
       .concat(values(clusters).flatMap((c) => [c.x1, c.x2]));
     const yValues = data
-      .map((d) => d['NMDS 2'])
+      .map((d) => d.NMDS2)
       .concat(values(clusters).flatMap((c) => [c.y1, c.y2]));
     const minX = min(xValues);
     const maxX = max(xValues);
@@ -64,17 +64,17 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     //  scaleColor(d['Neighbours average win rate'])
     const plotRender = data.map((d, i) => (
       <circle
-        cx={xScale(d['NMDS 1'])}
-        cy={yScale(d['NMDS 2'])}
+        cx={xScale(d.NMDS1)}
+        cy={yScale(d.NMDS2)}
         fill={
-          bottomDecks.find((bd) => bd['Deck ID'] === d['Deck ID'])
+          bottomDecks.find((bd) => bd.ID === d.ID)
             ? theme.colors.lightestRed
-            : topDecks.find((td) => td['Deck ID'] === d['Deck ID'])
+            : topDecks.find((td) => td.ID === d.ID)
             ? theme.colors.blue
             : theme.colors.lightBlue
         }
         r={sizeScale(d.Wins)}
-        key={d['Deck ID']}
+        key={d.ID}
       />
     ));
     return [plotRender, xScale, yScale];
