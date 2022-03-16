@@ -201,7 +201,7 @@ export default () => {
             value={selectedColors}
           >
             {colors.map((c) => (
-              <option key={c} value={c} selected={selectedColors === c}>
+              <option key={c} value={c}>
                 {c}
               </option>
             ))}
