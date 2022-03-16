@@ -176,7 +176,19 @@ export default () => {
     setClusters(newClusters);
   };
 
-  const colors = ['WU', 'UB', 'WG', 'WB', 'UG', 'UR', 'WR'];
+  const colors = [
+    'WU',
+    'UB',
+    'BR',
+    'RG',
+    'WG',
+    'WB',
+    'BG',
+    'UG',
+    'UR',
+    'WR',
+    '4C',
+  ];
 
   return (
     <ArticleMain>
