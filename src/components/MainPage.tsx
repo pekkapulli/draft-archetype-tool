@@ -74,7 +74,7 @@ const Footer = styled.footer`
 `;
 
 const colors = [
-  // 'WUG',
+  'WUG',
   'WUB',
   'UBR',
   'WRG',
@@ -227,7 +227,6 @@ export default () => {
           come from players with at least 50% win rate and ranked platinum or
           better.
         </P>
-        <P>(Brokers decks are coming today, data is being fixed 😅.)</P>
         <P>
           Similar decks (more of the same cards) are closer to each other on the
           map, and decks with more wins have bigger dots.
