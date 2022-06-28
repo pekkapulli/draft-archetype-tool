@@ -15,6 +15,7 @@ interface TitleProps {
     onClick: () => void;
   }[];
   inView?: boolean;
+  children: React.ReactNode;
 }
 
 const TitleContainer = styled.div<{

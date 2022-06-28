@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 
-export const withParentDimensions = <Props extends unknown>(
+export const withParentDimensions = <Props extends object>(
   Component: React.ComponentType<Props>
 ): React.ComponentType<
   Pick<Props, Exclude<keyof Props, keyof ParentDimensionsProps>>

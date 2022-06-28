@@ -253,6 +253,7 @@ export const SmallButton = styled(Button)`
 
 interface LinkButtonProps {
   to: string;
+  children: React.ReactNode;
 }
 
 export const LinkButton: React.FunctionComponent<LinkButtonProps> = (props) => (

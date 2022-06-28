@@ -52,7 +52,7 @@ const ToggleButton = styled.button`
 `;
 
 const FactBox: React.FunctionComponent<
-  { collapsed?: boolean } & ParentDimensionsProps
+  { collapsed?: boolean; children: React.ReactNode } & ParentDimensionsProps
 > = (props) => {
   const COLLAPSED_HEIGHT = 130;
   const contentRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
