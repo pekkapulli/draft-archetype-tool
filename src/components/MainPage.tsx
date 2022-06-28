@@ -15,7 +15,7 @@ const fetchMetaData = async (
   selectedColors: string,
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
 ) => {
-  let response = await fetch(`data/NEOmetadata${selectedColors}.csv`);
+  let response = await fetch(`data/SNCmetadata${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckDatum[] = csvParse(
     text,
@@ -37,7 +37,7 @@ const fetchDeckData = async (
   selectedColors: string,
   setDeckLists: React.Dispatch<React.SetStateAction<DeckList[] | null>>
 ) => {
-  let response = await fetch(`data/NEO${selectedColors}.csv`);
+  let response = await fetch(`data/SNC${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
@@ -58,7 +58,7 @@ const InlineInput = styled.input`
 const InlineSelect = styled.select`
   display: inline-block;
   height: 20px;
-  width: 60px;
+  width: 160px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
   color: ${theme.colors.blue};
@@ -73,12 +73,43 @@ const Footer = styled.footer`
   padding: ${theme.spacing(5)} 0;
 `;
 
+const colors = [
+  // 'WUG',
+  'WUB',
+  'UBR',
+  'WRG',
+  'BRG',
+  'WU',
+  'UB',
+  'BR',
+  'RG',
+  'WG',
+];
+
+const colorNames: Record<string, string> = {
+  WUG: 'WUG (Brokers)',
+  WUB: 'WUB (Obscura)',
+  UBR: 'UBR (Maestros)',
+  WRG: 'WRG (Cabaretti)',
+  BRG: 'BRG (Riveteers)',
+  WU: 'WU',
+  UB: 'UB',
+  BR: 'BR',
+  RG: 'RG',
+  WG: 'WG',
+};
+
 export default () => {
   const [metaData, setMetaData] = useState<null | DeckDatum[]>(null);
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
   const [topPercentage, setTopPercentage] = useState<number>(10);
-  const [selectedColors, setSelectedColors] = useState<string>('WU');
+  const [selectedColors, setSelectedColors] = useState<string>(colors[0]);
+
+  console.log(
+    'metadata',
+    metaData?.map((m) => m.NMDS1)
+  );
 
   useEffect(() => {
     setClusters({});
@@ -176,20 +207,6 @@ export default () => {
     setClusters(newClusters);
   };
 
-  const colors = [
-    'WU',
-    'UB',
-    'BR',
-    'RG',
-    'WG',
-    'WB',
-    'BG',
-    'UG',
-    'UR',
-    'WR',
-    '4C',
-  ];
-
   return (
     <ArticleMain>
       <Header />
@@ -202,13 +219,15 @@ export default () => {
           >
             {colors.map((c) => (
               <option key={c} value={c}>
-                {c}
+                {colorNames[c]}
               </option>
             ))}
           </InlineSelect>{' '}
-          Bo1 draft decks in Kamigawa: Neon Dynasty on Magic Arena. The decks
-          come from players ranked platinum or better.
+          Bo1 draft decks in Streets of New Capenna on Magic Arena. The decks
+          come from players with at least 50% win rate and ranked platinum or
+          better.
         </P>
+        <P>(Brokers decks are coming today, data is being fixed 😅.)</P>
         <P>
           Similar decks (more of the same cards) are closer to each other on the
           map, and decks with more wins have bigger dots.
@@ -271,6 +290,7 @@ export default () => {
               Archetypist on Github
             </A>
           </P>
+          <P>Updated June 28th 2022.</P>
         </WideTextContent>
       </Footer>
     </ArticleMain>

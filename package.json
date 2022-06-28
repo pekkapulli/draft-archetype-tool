@@ -54,7 +54,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",
-    "image-webpack-loader": "^8.0.1",
+    "image-webpack-loader": "^4.2.0",
     "papaparse": "^5.3.1",
     "path": "^0.12.7",
     "prettier": "^2.4.1",

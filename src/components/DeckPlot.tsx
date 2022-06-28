@@ -51,6 +51,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     const maxX = max(xValues);
     const minY = min(yValues);
     const maxY = max(yValues);
+    console.log(minX, maxX, minY, maxY);
     const xScale = scaleLinear()
       .range([10, width - 10])
       .domain([minX !== undefined ? minX : 0, maxX !== undefined ? maxX : 2]);
