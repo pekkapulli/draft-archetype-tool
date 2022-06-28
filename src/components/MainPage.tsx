@@ -106,11 +106,6 @@ export default () => {
   const [topPercentage, setTopPercentage] = useState<number>(10);
   const [selectedColors, setSelectedColors] = useState<string>(colors[0]);
 
-  console.log(
-    'metadata',
-    metaData?.map((m) => m.NMDS1)
-  );
-
   useEffect(() => {
     setClusters({});
     fetchMetaData(selectedColors, setMetaData);
