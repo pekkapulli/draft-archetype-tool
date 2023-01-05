@@ -215,8 +215,7 @@ export default () => {
               </option>
             ))}
           </InlineSelect>{' '}
-          Bo1 draft decks in {SET_NAME} on Magic Arena. The decks come from
-          players with at least 50% win rate and ranked platinum or better.
+          Bo1 draft decks in {SET_NAME} on Magic Arena.
         </P>
         <P>
           Similar decks (more of the same cards) are closer to each other on the
@@ -280,7 +279,7 @@ export default () => {
               Archetypist on Github
             </A>
           </P>
-          <P>Updated June 28th 2022.</P>
+          <P>Updated January 5th 2023.</P>
         </WideTextContent>
       </Footer>
     </ArticleMain>
