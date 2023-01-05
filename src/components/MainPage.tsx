@@ -15,7 +15,7 @@ const fetchMetaData = async (
   selectedColors: string,
   setMetaData: React.Dispatch<React.SetStateAction<DeckDatum[] | null>>
 ) => {
-  let response = await fetch(`data/SNCmetadata${selectedColors}.csv`);
+  let response = await fetch(`data/${SET_ID}metadata${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckDatum[] = csvParse(
     text,
@@ -33,11 +33,14 @@ const fetchMetaData = async (
   setMetaData(sorted);
 };
 
+const SET_ID = 'BRO';
+const SET_NAME = "Brother's War";
+
 const fetchDeckData = async (
   selectedColors: string,
   setDeckLists: React.Dispatch<React.SetStateAction<DeckList[] | null>>
 ) => {
-  let response = await fetch(`data/SNC${selectedColors}.csv`);
+  let response = await fetch(`data/${SET_ID}${selectedColors}.csv`);
   let text = await response.text();
   const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
@@ -58,7 +61,7 @@ const InlineInput = styled.input`
 const InlineSelect = styled.select`
   display: inline-block;
   height: 20px;
-  width: 160px;
+  width: 100px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
   color: ${theme.colors.blue};
@@ -73,18 +76,7 @@ const Footer = styled.footer`
   padding: ${theme.spacing(5)} 0;
 `;
 
-const colors = [
-  'WUG',
-  'WUB',
-  'UBR',
-  'WRG',
-  'BRG',
-  'WU',
-  'UB',
-  'BR',
-  'RG',
-  'WG',
-];
+const colors = ['WU', 'UB', 'BR', 'RG', 'WG', 'WB', 'BG', 'UG', 'UR', 'WR'];
 
 const colorNames: Record<string, string> = {
   WUG: 'WUG (Brokers)',
@@ -97,6 +89,11 @@ const colorNames: Record<string, string> = {
   BR: 'BR',
   RG: 'RG',
   WG: 'WG',
+  WB: 'WB',
+  BG: 'BG',
+  UG: 'UG',
+  UR: 'UR',
+  WR: 'WR',
 };
 
 export default () => {
@@ -218,16 +215,15 @@ export default () => {
               </option>
             ))}
           </InlineSelect>{' '}
-          Bo1 draft decks in Streets of New Capenna on Magic Arena. The decks
-          come from players with at least 50% win rate and ranked platinum or
-          better.
+          Bo1 draft decks in {SET_NAME} on Magic Arena. The decks come from
+          players with at least 50% win rate and ranked platinum or better.
         </P>
         <P>
           Similar decks (more of the same cards) are closer to each other on the
           map, and decks with more wins have bigger dots.
         </P>
         <P>
-          Each deck is given a value according to the win rate of it and its 19
+          Each deck is given a value according to the win rate of it and its 14
           closest neighbours. The top{' '}
           <InlineInput
             type="number"
