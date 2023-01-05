@@ -34,7 +34,7 @@ const fetchMetaData = async (
 };
 
 const SET_ID = 'BRO';
-const SET_NAME = "Brother's War";
+const SET_NAME = "Brothers' War";
 
 const fetchDeckData = async (
   selectedColors: string,
