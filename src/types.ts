@@ -21,11 +21,6 @@ export interface DeckDatum {
   Neigh12: string;
   Neigh13: string;
   Neigh14: string;
-  Neigh15: string;
-  Neigh16: string;
-  Neigh17: string;
-  Neigh18: string;
-  Neigh19: string;
   NeighWin1: number;
   NeighWin2: number;
   NeighWin3: number;
@@ -40,11 +35,6 @@ export interface DeckDatum {
   NeighWin12: number;
   NeighWin13: number;
   NeighWin14: number;
-  NeighWin15: number;
-  NeighWin16: number;
-  NeighWin17: number;
-  NeighWin18: number;
-  NeighWin19: number;
   'Neigh Loss1': number;
   'Neigh Loss2': number;
   'Neigh Loss3': number;
@@ -59,11 +49,6 @@ export interface DeckDatum {
   'Neigh Loss12': number;
   'Neigh Loss13': number;
   'Neigh Loss14': number;
-  'Neigh Loss15': number;
-  'Neigh Loss16': number;
-  'Neigh Loss17': number;
-  'Neigh Loss18': number;
-  'Neigh Loss19': number;
 }
 
 export interface Clusters {
@@ -91,4 +76,16 @@ export interface DeckDatumWithList extends DeckDatum {
 export interface Card {
   name: string;
   averageAmount: number;
+}
+
+export interface ColorWinRateRow {
+  Pair: string;
+  Wins: number;
+  Losses: number;
+  Games: number;
+  'Win Rate': number;
+}
+
+export interface ColorWinRates {
+  [color: string]: number;
 }

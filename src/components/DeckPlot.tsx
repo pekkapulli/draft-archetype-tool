@@ -67,10 +67,10 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
         cx={xScale(d.NMDS1)}
         cy={yScale(d.NMDS2)}
         fill={
-          bottomDecks.find((bd) => bd.ID === d.ID)
-            ? theme.colors.lightestRed
-            : topDecks.find((td) => td.ID === d.ID)
+          topDecks.find((td) => td.ID === d.ID)
             ? theme.colors.blue
+            : bottomDecks.find((bd) => bd.ID === d.ID)
+            ? theme.colors.lightestRed
             : theme.colors.lightBlue
         }
         r={sizeScale(d.Wins)}

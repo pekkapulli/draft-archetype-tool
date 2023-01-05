@@ -6,10 +6,20 @@ import styled from 'styled-components';
 import { theme } from '../theme';
 import { autoType, csvParse } from 'd3-dsv';
 import DeckPlot from './DeckPlot';
-import { Cluster, Clusters, DeckDatum, DeckList } from '../types';
+import {
+  Cluster,
+  Clusters,
+  ColorWinRateRow,
+  ColorWinRates,
+  DeckDatum,
+  DeckList,
+} from '../types';
 import { ClusterCharts } from './ClusterCharts';
 import { mapValues, orderBy, sum } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
+
+const SET_ID = 'BRO';
+const SET_NAME = "Brothers' War";
 
 const fetchMetaData = async (
   selectedColors: string,
@@ -33,9 +43,6 @@ const fetchMetaData = async (
   setMetaData(sorted);
 };
 
-const SET_ID = 'BRO';
-const SET_NAME = "Brothers' War";
-
 const fetchDeckData = async (
   selectedColors: string,
   setDeckLists: React.Dispatch<React.SetStateAction<DeckList[] | null>>
@@ -44,6 +51,23 @@ const fetchDeckData = async (
   let text = await response.text();
   const parsed: DeckList[] = csvParse(text, autoType) as unknown as DeckList[];
   setDeckLists(parsed);
+};
+
+const fetchColorWinRates = async (
+  setMetaData: React.Dispatch<React.SetStateAction<ColorWinRates | null>>
+) => {
+  let response = await fetch(`data/${SET_ID}_winrates.csv`);
+  let text = await response.text();
+  const parsed: ColorWinRateRow[] = csvParse(
+    text,
+    autoType
+  ) as unknown as ColorWinRateRow[];
+  setMetaData(
+    parsed.reduce<ColorWinRates>(
+      (result, row) => ({ ...result, [row.Pair]: row['Win Rate'] }),
+      {}
+    )
+  );
 };
 
 const InlineInput = styled.input`
@@ -99,9 +123,23 @@ const colorNames: Record<string, string> = {
 export default () => {
   const [metaData, setMetaData] = useState<null | DeckDatum[]>(null);
   const [deckLists, setDeckLists] = useState<null | DeckList[]>(null);
+  const [colorWinRates, setColorWinRates] = useState<null | ColorWinRates>(
+    null
+  );
   const [filterTopDecks, setFilterTopDecks] = useState<boolean>(false);
-  const [topPercentage, setTopPercentage] = useState<number>(10);
+  const [winRateThreshold, setWinRateThreshold] = useState<number>(60);
+  const [bottomThreshold, setBottomThreshold] = useState<number>(55);
   const [selectedColors, setSelectedColors] = useState<string>(colors[0]);
+
+  useEffect(() => {
+    fetchColorWinRates(setColorWinRates);
+  }, []);
+
+  useEffect(() => {
+    if (colorWinRates) {
+      setBottomThreshold(colorWinRates.TOTAL * 100);
+    }
+  }, [colorWinRates?.TOTAL]);
 
   useEffect(() => {
     setClusters({});
@@ -111,12 +149,11 @@ export default () => {
 
   const [decks, topDecks, bottomDecks, cards, averageAmounts] =
     useDeepMemo(() => {
-      const topDecks = metaData?.slice(
-        metaData.length * (1 - topPercentage / 100)
+      const topDecks = metaData?.filter(
+        (deck) => deck['Neighbours average win rate'] >= winRateThreshold / 100
       );
-      const bottomDecks = metaData?.slice(
-        0,
-        metaData.length * (topPercentage / 100)
+      const bottomDecks = metaData?.filter(
+        (deck) => deck['Neighbours average win rate'] <= bottomThreshold / 100
       );
       const dataSet = filterTopDecks ? topDecks : metaData;
 
@@ -148,7 +185,13 @@ export default () => {
           : {};
 
       return [dataSet, topDecks, bottomDecks, cards, averages];
-    }, [metaData, deckLists, filterTopDecks, topPercentage]);
+    }, [
+      metaData,
+      deckLists,
+      filterTopDecks,
+      winRateThreshold,
+      bottomThreshold,
+    ]);
 
   const [clusters, setClusters] = useState<Clusters>({});
 
@@ -222,19 +265,21 @@ export default () => {
           map, and decks with more wins have bigger dots.
         </P>
         <P>
-          Each deck is given a value according to the win rate of it and its 14
-          closest neighbours. The top{' '}
+          Each deck is given a value according to the average win rate of it and
+          its 14 closest neighbours. Decks above{' '}
           <InlineInput
             type="number"
             step={1}
-            min={1}
-            max={50}
-            value={topPercentage}
-            onChange={(event) => setTopPercentage(event.target.valueAsNumber)}
+            min={50}
+            max={99}
+            value={winRateThreshold}
+            onChange={(event) =>
+              setWinRateThreshold(event.target.valueAsNumber)
+            }
           />
-          % of these values are highlighted in blue and bottom {topPercentage}%
-          as light red. The blue clusters can help define different strong deck
-          compositions in the colour pair.
+          % win rate are highlighted in blue and decks below the overall average
+          win rate ({bottomThreshold} %) as light red. The blue clusters can
+          help define different strong deck compositions in the colour pair.
         </P>
         <P>Create boxes by dragging on the graph to explore clusters.</P>
         <label style={{ cursor: 'pointer' }}>

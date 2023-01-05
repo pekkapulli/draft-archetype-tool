@@ -9,6 +9,7 @@ import { ExampleDecks } from './ExampleDecks';
 
 interface ClusterAnalysis {
   cluster: string;
+  averageWinRate: number;
   averageWins: number;
   averageAmounts: Card[];
   decks: DeckDatumWithList[];
@@ -41,6 +42,9 @@ const ClusterCard = (props: ClusterCardProps) => {
         Cluster {props.clusterAnalysis.cluster}
       </TitleWithButtons>
       <P>
+        Average win rate:{' '}
+        {(props.clusterAnalysis.averageWinRate * 100).toFixed(1)} %
+        <br />
         Average wins: {props.clusterAnalysis.averageWins.toFixed(1)}
         <br />
         Number of decks: {props.clusterAnalysis.decks.length}

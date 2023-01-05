@@ -22,8 +22,10 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@types/chroma-js": "^2.1.4",
+    "@types/d3-brush": "^3.0.2",
     "@types/d3-dsv": "^3.0.1",
     "@types/d3-scale": "^4.0.3",
+    "@types/d3-selection": "^3.0.4",
     "@types/d3-shape": "^3.1.1",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
@@ -66,11 +68,9 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@types/d3-brush": "^3.0.2",
     "@types/d3-drag": "^3.0.2",
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-scale-chromatic": "^3.0.0",
-    "@types/d3-selection": "^3.0.4",
     "chroma-js": "^2.4.2",
     "d3-brush": "^3.0.0",
     "d3-drag": "^3.0.0",

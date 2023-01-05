@@ -37,6 +37,9 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
       const averageWins =
         sum(clusterDecksWithLists.map((d) => Number(d.Wins))) /
         clusterDecksWithLists.length;
+      const averageWinRate =
+        sum(clusterDecksWithLists.map((d) => Number(d.Wins))) /
+        sum(clusterDecksWithLists.map((d) => Number(d.Games)));
       const averageAmounts = cards.map((cardName) => ({
         name: cardName,
         averageAmount:
@@ -48,6 +51,7 @@ export const ClusterCharts = (props: ClusterChartsProps) => {
       }));
       return {
         cluster: id,
+        averageWinRate,
         averageWins,
         averageAmounts: orderBy(averageAmounts, 'averageAmount', 'desc'),
         decks: clusterDecksWithLists,
