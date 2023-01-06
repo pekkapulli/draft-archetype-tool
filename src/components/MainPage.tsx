@@ -85,7 +85,7 @@ const InlineInput = styled.input`
 const InlineSelect = styled.select`
   display: inline-block;
   height: 20px;
-  width: 100px;
+  width: 120px;
   border: none;
   border-bottom: 1px dashed ${theme.colors.blue};
   color: ${theme.colors.blue};
@@ -100,7 +100,20 @@ const Footer = styled.footer`
   padding: ${theme.spacing(5)} 0;
 `;
 
-const colors = ['WU', 'UB', 'BR', 'RG', 'WG', 'WB', 'BG', 'UG', 'UR', 'WR'];
+const colors = [
+  'WU',
+  'UB',
+  'BR',
+  'RG',
+  'WG',
+  'WB',
+  'BG',
+  'UG',
+  'UR',
+  'WR',
+  'Multicolor',
+  'MonoRed',
+];
 
 const colorNames: Record<string, string> = {
   WUG: 'WUG (Brokers)',
@@ -118,6 +131,8 @@ const colorNames: Record<string, string> = {
   UG: 'UG',
   UR: 'UR',
   WR: 'WR',
+  Multicolor: 'Multicolor',
+  MonoRed: 'Mono-red',
 };
 
 export default () => {
