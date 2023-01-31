@@ -5,6 +5,7 @@ import { useDeepMemo } from '../hooks/useDeepMemo';
 import { theme } from '../theme';
 import { DeckDatumWithList } from '../types';
 import { P, SmallTitle } from './common-styled-components';
+import { CardRowWithPopup } from './CardRowWithPopup';
 
 interface DeckListsProps {
   deckLists: DeckDatumWithList[];
