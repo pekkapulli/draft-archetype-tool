@@ -116,7 +116,7 @@ const DeckPlot = (props: Props & ParentDimensionsProps) => {
     <SVG width={width} height={height} ref={svgRef}>
       <rect
         fill="transparent"
-        stroke={theme.colors.grey(5)}
+        stroke={theme.colors.grey(3)}
         strokeWidth={4}
         x={0}
         y={0}
