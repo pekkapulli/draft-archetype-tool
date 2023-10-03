@@ -18,8 +18,8 @@ import { ClusterCharts } from './ClusterCharts';
 import { mapValues, orderBy, sum } from 'lodash';
 import { useDeepMemo } from '../hooks/useDeepMemo';
 
-const SET_ID = 'ONE';
-const SET_NAME = 'Phyrexia: All Will Be One';
+const SET_ID = 'LTR';
+const SET_NAME = 'Lord of the Rings: Tales from the Middle Earth';
 
 const fetchMetaData = async (
   selectedColors: string,
@@ -100,7 +100,7 @@ const Footer = styled.footer`
   padding: ${theme.spacing(5)} 0;
 `;
 
-const colors = ['WU', 'UB', 'BR', 'RG', 'WG', 'WB', 'BG', 'UG', 'UR', 'WR'];
+const colors = ['BR'];
 
 const colorNames: Record<string, string> = {
   WUG: 'WUG (Brokers)',

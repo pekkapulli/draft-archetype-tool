@@ -7,6 +7,7 @@ export interface DeckDatum {
   Games: number;
   Wins: number;
   Losses: number;
+  Neigh0: string;
   Neigh1: string;
   Neigh2: string;
   Neigh3: string;
@@ -16,39 +17,6 @@ export interface DeckDatum {
   Neigh7: string;
   Neigh8: string;
   Neigh9: string;
-  Neigh10: string;
-  Neigh11: string;
-  Neigh12: string;
-  Neigh13: string;
-  Neigh14: string;
-  NeighWin1: number;
-  NeighWin2: number;
-  NeighWin3: number;
-  NeighWin4: number;
-  NeighWin5: number;
-  NeighWin6: number;
-  NeighWin7: number;
-  NeighWin8: number;
-  NeighWin9: number;
-  NeighWin10: number;
-  NeighWin11: number;
-  NeighWin12: number;
-  NeighWin13: number;
-  NeighWin14: number;
-  'Neigh Loss1': number;
-  'Neigh Loss2': number;
-  'Neigh Loss3': number;
-  'Neigh Loss4': number;
-  'Neigh Loss5': number;
-  'Neigh Loss6': number;
-  'Neigh Loss7': number;
-  'Neigh Loss8': number;
-  'Neigh Loss9': number;
-  'Neigh Loss10': number;
-  'Neigh Loss11': number;
-  'Neigh Loss12': number;
-  'Neigh Loss13': number;
-  'Neigh Loss14': number;
 }
 
 export interface Clusters {
